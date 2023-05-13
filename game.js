@@ -20,7 +20,7 @@ class Intro extends Prefab // maybe change intro to an animation & then have the
        
         this.input.on('pointerdown', () => {
             this.cameras.main.fade(500, 0,0,0);
-            this.time.delayedCall(500, () => this.scene.start('PLACEHOLDER FOR NEXT SCENE'));
+            this.time.delayedCall(500, () => this.scene.start('levelone'));
         });
     }
 
@@ -37,14 +37,19 @@ class LevelOne extends Prefab
         super('levelone');
     }
 
-    create ()
+    preload ()
     {
+        super.preload();
+    }
 
+    create ()
+    {   
+        super.create();
     }
 
     update ()
     {
-        
+        super.update();
     }
 }
 
@@ -55,8 +60,15 @@ let config = {
         width: 1920,
         height: 1080,
     },
-    scene: [Intro],
-    title: "Ghost Prototype"
+    scene: [LevelOne],
+    //scene: [Intro, LevelOne],
+    title: "Ghost Prototype",
+    physics: {
+        default: 'arcade',
+        arcade: {
+            gravity: { }
+        }
+    }
 }
 
 const game = new Phaser.Game(config);
