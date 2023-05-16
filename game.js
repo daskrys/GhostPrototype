@@ -39,15 +39,36 @@ class LevelOne extends Prefab
 
     preload ()
     {
-        super.preload();
+        super.preload(); // preloads prefabs assets
     }
 
     create ()
     {   
         super.create();
+        this.platforms.create(1600, 900, 'ground').setScale(1.5).refreshBody();
+        this.platforms.create(450, 700, 'ground').setScale(1.5).refreshBody();
+        this.platforms.create(1600, 500, 'ground').setScale(1.5).refreshBody();
     }
 
     update ()
+    {
+        super.update(); // updates prefab
+    }
+}
+
+class LevelTwo extends Prefab 
+{
+    constructor ()
+    {
+
+    }
+
+    preload ()
+    {
+        super.preload();
+    }
+
+    update () 
     {
         super.update();
     }
@@ -66,7 +87,7 @@ let config = {
     physics: {
         default: 'arcade',
         arcade: {
-            gravity: { }
+            gravity: { y: 300 }
         }
     }
 }
