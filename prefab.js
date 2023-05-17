@@ -10,6 +10,8 @@ class Prefab extends Phaser.Scene
         this.load.image('ghost', 'assets/Mega-Ghost.png');
         this.load.image('ground', 'assets/ground.png');
         this.load.image('coin', 'assets/coin.png');
+        this.load.image('enemy', 'assets/enemy.png');
+        this.load.image('projectile', 'assets/projectile.png');
 
     }
 
@@ -20,8 +22,14 @@ class Prefab extends Phaser.Scene
 
         this.cameras.main.setBackgroundColor('#7393B3');
         this.ghost = this.physics.add.sprite(100, 900, 'ghost');
-        
+        //this.enemy = this.physics.add.sprite(100, 100, 'enemy');
+        //this.enemy.setVisible(false);
         this.coin = this.physics.add.staticGroup();
+        // Create a group for projectiles
+        //this.projectiles = this.physics.add.group();
+
+        // Function to shoot a projectile towards the playe
+
         this.coin.create(900, 100, 'coin').setScale(0.1).refreshBody();
 
         //this.coin.setScale(0.1);
@@ -36,8 +44,51 @@ class Prefab extends Phaser.Scene
         this.physics.add.collider(this.ghost, this.platforms); // sets collision between ground and ghost
         this.physics.add.overlap(this.ghost, this.coin, this.collectCoin, null, this);
 
+        
         //this.cameras.main.fadeIn(this.transitionDuration, 0, 0, 0);
     }
+
+    createEnemy ()
+    {
+        this.projectiles = this.physics.add.group();
+        this.enemy = this.physics.add.staticGroup();
+        // Check for collisions between the player and the projectiles
+        this.physics.add.collider(this.ghost, this.projectiles, this.hitByProjectile, null, this);
+        // Check for collisions between the player and the enemy
+        this.physics.add.collider(this.ghost, this.enemy, this.hitEnemy, null, this);
+    }
+
+
+    shootProjectile (enemy)
+    {
+        let projectile = this.projectiles.create(enemy.x, enemy.y, 'projectile').setScale(0.05);
+        projectile.body.allowGravity = false;
+        this.physics.moveToObject(projectile, this.ghost, 200);
+    }
+
+    hitByProjectile(player, projectile) 
+    {
+        this.ghost.setPosition(100, 900);
+        this.ghost.setVelocity(0);
+    }
+    
+    hitEnemy(ghost, enemy) 
+    {
+        // Check if the player is jumping on the enemy
+        if (ghost.body.touching.down && enemy.body.touching.up) 
+        {
+            // Destroy the enemy
+            enemy.destroy();
+            this.events.emit('enemyDestroyed');
+            // Optional: Make the player jump after stomping the enemy
+            ghost.setVelocityY(-300);
+        } 
+        else 
+        {
+            // could be empty?
+        }
+    }
+    
 
     typeWrite(textBox, textString, index, speed) 
     {
@@ -52,14 +103,6 @@ class Prefab extends Phaser.Scene
             });
         }
     }
-
-    randomNum ()
-    {
-        let min = Math.ceil(1);
-        let max = Math.floor(25000);
-        return Math.floor(Math.random() * (max - min) + min); // The maximum is exclusive and the minimum is inclusive
-    }
-    // bottom two functins need a rework dont work as intended
 
     randomNum ()
     {
