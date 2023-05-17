@@ -46,8 +46,8 @@ class LevelOne extends Prefab
     {   
 
         super.create();
-        let tut = this.add.text(600, 400, "L")
-        .setScale(3);
+        this.add.text(100, 300, "Collect Coints to Advance!").setFontSize(30);
+        this.add.text(100, 200, "Move Left: 'A' Key\nMove Right: 'D' Key\nJump: SPACE Key").setFontSize(30);
         this.platforms.create(1600, 900, 'ground').setScale(1.5).refreshBody();
         this.platforms.create(450, 700, 'ground').setScale(1.5).refreshBody();
         this.platforms.create(1600, 500, 'ground').setScale(1.5).refreshBody();
