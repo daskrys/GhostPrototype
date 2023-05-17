@@ -44,15 +44,22 @@ class LevelOne extends Prefab
 
     create ()
     {   
+
         super.create();
         this.platforms.create(1600, 900, 'ground').setScale(1.5).refreshBody();
         this.platforms.create(450, 700, 'ground').setScale(1.5).refreshBody();
         this.platforms.create(1600, 500, 'ground').setScale(1.5).refreshBody();
+        // add a second coin
+        this.setTargets(2, 'leveltwo');
+        //this.coinTwo = this.physics.add.staticGroup();
+        this.coin.create(800, 300, 'coin').setScale(0.1).refreshBody();
+       
+        //this.physics.add.overlap(this.ghost, this.coin, this.collectCoin, null, this);
     }
 
     update ()
     {
-        super.update(); // updates prefab
+        super.update(); // updates from prefab
     }
 }
 
@@ -60,7 +67,26 @@ class LevelTwo extends Prefab
 {
     constructor ()
     {
+        super('leveltwo');
+    }
 
+    create ()
+    {   
+        super.create();
+        // create more platforms
+        this.platforms.create(200, 580, 'ground').setScale(1.5).refreshBody();
+        this.platforms.create(1600, 580, 'ground').setScale(1.5).refreshBody();
+        this.platforms.create(1200, 800, 'ground').setScale(1.5).refreshBody();
+        this.platforms.create(-100, 380, 'ground').setScale(1.5).refreshBody();
+
+        // create more coints
+        this.setTargets(4, 'levelthree');
+        
+        this.coin.create(800, 300, 'coin').setScale(0.1).refreshBody();
+        this.coin.create(800, 600, 'coin').setScale(0.1).refreshBody();
+        this.coin.create(1600, 300, 'coin').setScale(0.1).refreshBody();
+
+      //  this.physics.add.overlap(this.ghost, this.coinTwo, this.collectCoin, null, this);
     }
 
     preload ()
@@ -74,6 +100,29 @@ class LevelTwo extends Prefab
     }
 }
 
+class LevelThree extends Prefab
+{
+    constructor () 
+    {
+        super('levelthree');
+    }
+
+    preload () 
+    {
+        super.preload();
+    }
+
+    create () 
+    {   
+        super.create();
+    }
+
+    update ()
+    {
+        super.update();
+    }
+}
+
 let config = {
     scale: {
         mode: Phaser.Scale.FIT,
@@ -81,8 +130,8 @@ let config = {
         width: 1920,
         height: 1080,
     },
-    scene: [LevelOne],
-    //scene: [Intro, LevelOne],
+    scene: [LevelOne, LevelTwo, LevelThree],
+    //scene: [Intro, LevelOne, LevelTwo],
     title: "Ghost Prototype",
     physics: {
         default: 'arcade',

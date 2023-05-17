@@ -16,6 +16,7 @@ class Prefab extends Phaser.Scene
     create () 
     {
         //this.transitionDuration = 1000;
+        //this.counter = 0;
 
         this.cameras.main.setBackgroundColor('#7393B3');
         this.ghost = this.physics.add.sprite(100, 900, 'ghost');
@@ -68,11 +69,37 @@ class Prefab extends Phaser.Scene
         return Math.floor(Math.random() * (max - min) + min); // The maximum is exclusive and the minimum is inclusive
     }
 
+    setTargets (target, key) 
+    {
+        this.targetCoins = target;
+        this.coinsCollected = 0;
+        this.nextScene = key;
+    }
+    
+
     collectCoin(ghost, coin) 
+    {
+        // Remove the coin from the game
+        coin.disableBody(true, true);
+    
+        // Increase the counter
+        this.coinsCollected += 1;
+    
+        // Check if the target has been reached
+        if (this.coinsCollected >= this.targetCoins) {
+            // Reset the counter
+            this.coinsCollected = 0;
+    
+            // Make a delayed call
+            this.time.delayedCall(2000, () => this.scene.start(this.nextScene));
+        }
+    }
+    
+    /*collectCoin(ghost, coin) 
     {
         coin.disableBody(true, true);
     }
-    
+    */
 
     update () 
     {
