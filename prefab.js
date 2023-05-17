@@ -129,12 +129,18 @@ class Prefab extends Phaser.Scene
         this.coinsCollected += 1;
     
         // Check if the target has been reached
-        if (this.coinsCollected >= this.targetCoins) {
-            // Reset the counter
-            this.coinsCollected = 0;
-    
+        if (this.coinsCollected >= this.targetCoins) 
+        {    
             // Make a delayed call
-            this.time.delayedCall(2000, () => this.scene.start(this.nextScene));
+            this.time.delayedCall(2000, () => 
+            {   //this.summary();
+                let sum = "Total Coins Collected: ";
+                this.add.text(600, 400, sum + this.coinsCollected.toString())
+        .setScale(3);
+                this.time.delayedCall(5000, () => {
+                    this.coinsCollected = 0; // reset counter
+                    this.scene.start(this.nextScene)});
+            });
         }
     }
     
@@ -143,6 +149,12 @@ class Prefab extends Phaser.Scene
         coin.disableBody(true, true);
     }
     */
+
+    summary () 
+    {
+        this.add.text(750, 750, this.coinsCollected.toString())
+        .setScale(3);
+    }
 
     update () 
     {
